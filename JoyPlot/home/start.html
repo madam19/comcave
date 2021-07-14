@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+
+const m0 = {
+  id: "16322ee964add9a2@230",
+  variables: [
+    {
+      inputs: ["md"],
+      value: (function(md){return(md)})
+
+
+)})
+    },
+    {
+      name: "chart",
+      inputs: ["d3","DOM","width","height","xAxis","yAxis","data","y","area","line"],
+      value: (function(d3,DOM,width,height,xAxis,yAxis,data,y,area,line)
+{
+  const svg = d3.select(DOM.svg(width, height));
+
+  svg.append("g")
+      .call(xAxis);
+
+  svg.append("g")
+      .call(yAxis);
+  
+  const group = svg.append("g")
+    .selectAll("g")
+    .data(data.series)
+    .join("g")
+      .attr("transform", d => `translate(0,${y(d.name) + 1})`);
+
+  group.append("path")
+      .attr("fill", "#ddd")
+      .attr("d", d => area(d.values));
+
+  group.append("path")
+      .attr("fill", "none")
+      .attr("stroke", "black")
+      .attr("d", d => line(d.values));
+
+  return svg.node();
+}
+)
+    },
+    {
+      name: "overlap",
+      value: (function(){return(
+8
+)})
+    },
+    {
+      name: "height",
+      inputs: ["data"],
+      value: (function(data){return(
+data.series.length * 17
+)})
+    },
+    {
+      name: "margin",
+      value: (function(){return(
+{top: 40, right: 20, bottom: 30, left: 120}
+)})
+    },
+    {
+      name: "x",
+      inputs: ["d3","data","margin","width"],
+      value: (function(d3,data,margin,width){return(
+d3.scaleTime()
+    .domain(d3.extent(data.dates))
+    .range([margin.left, width - margin.right])
+)})
+    },
+    {
+      name: "y",
+      inputs: ["d3","data","margin","height"],
+      value: (function(d3,data,margin,height){return(
+d3.scalePoint()
+    .domain(data.series.map(d => d.name))
+    .range([margin.top, height - margin.bottom])
+)})
+    },
+    {
+      name: "z",
+      inputs: ["d3","data","overlap","y"],
+      value: (function(d3,data,overlap,y){return(
+d3.scaleLinear()
+    .domain([0, d3.max(data.series, d => d3.max(d.values))]).nice()
+    .range([0, -overlap * y.step()])
+)})
+    },
+    {
+      name: "xAxis",
+      inputs: ["height","margin","d3","x","width"],
+      value: (function(height,margin,d3,x,width){return(
+g => g
+  .attr("transform", `translate(0,${height - margin.bottom})`)
+  .call(d3.axisBottom(x)
+      .ticks(width / 80)
+      .tickSizeOuter(0))
+)})
+    },
+    {
+      name: "yAxis",
+      inputs: ["margin","d3","y"],
+      value: (function(margin,d3,y){return(
+g => g
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y).tickSize(0).tickPadding(4))
+    .call(g => g.select(".domain").remove())
+)})
+    },
+    {
+      name: "area",
+      inputs: ["d3","x","data","z"],
+      value: (function(d3,x,data,z){return(
+d3.area()
+    .curve(d3.curveBasis)
+    .defined(d => !isNaN(d))
+    .x((d, i) => x(data.dates[i]))
+    .y0(0)
+    .y1(d => z(d))
+)})
+    },
+    {
+      name: "line",
+      inputs: ["area"],
+      value: (function(area){return(
+area.lineY1()
+)})
+    },
+    {
+      name: "data",
+      inputs: ["d3"],
+      value: (async function(d3)
+{
+  const data = await d3.csv("./probly3.csv", ({name, date, total_1, total_2}) => ({name, date: date * 1000, value: +total_1 + +total_2}));
+
+  const dates = d3.nest()
+      .key(d => d.date)
+    .entries(data)
+    .map(d => new Date(+d.key))
+    .sort(d3.ascending);
+
+  const values = d3.nest()
+      .key(d => d.name)
+      .key(d => d.date)
+      .rollup(v => v[0].value)
+    .map(data);
+
+  return {
+    series: values.entries().map(({key, value}) => ({
+      name: key,
+      values: dates.map(d => value.get(+d))
+    })),
+    dates
+  };
+}
+)
+    },
+    {
+      name: "d3",
+      inputs: ["require"],
+      value: (function(require){return(
+require("d3@5")
+)})
+    }
+  ]
+};
+
+const notebook = {
+  id: "16322ee964add9a2@230",
+  modules: [m0]
+};
+
+export default notebook;    
+</script>
+
+
+</body>
+</html>

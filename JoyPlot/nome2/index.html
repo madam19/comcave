@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
+.axis .domain {
+    display: none;
+}
+
+.axis--x text {
+    fill: #999;
+}
+
+.axis--x line {
+    stroke: #aaa;
+}
+
+.axis--activity .tick line {
+    display: none;
+}
+
+.axis--activity text {
+    font-size: 12px;
+    fill: #777;
+}
+
+.axis--activity .tick:nth-child(odd) text {
+    fill: #222;
+}
+
+.line {
+    fill: none;
+    stroke: #fff;
+}
+
+.area {
+    fill: #448cab;
+}
+
+.activity:nth-child(odd) .area {
+    fill: #5ca3c1;
+}
+
+</style>
+</head>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var margin = { top: 30, right: 10, bottom: 30, left: 300 },
+    width = 700 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+//
+var chart_area =
+  d3
+    .select("body")   
+    .append('div')    // Выборка состоит из вновь созданного элемента <div>
+    .classed('chart_area', true) // Задаем класс выбранному элементу <div class='chart_area'></div>
+  ;
+ 
+  // append the svg object to the body of the page
+  var svg = d3.select("#my_dataviz")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+  
+  //read data
+  d3.csv("./probly3.csv", function(data) {
+
+
+  }
+
+
+
+</script>
+</body>
+</html>

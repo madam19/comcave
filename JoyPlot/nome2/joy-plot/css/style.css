@@ -1,0 +1,15 @@
+.lightgreyaxis path {
+  stroke: lightgrey;
+}
+
+.axis text {
+  fill: grey;
+}
+
+.axis path {
+  stroke: lightgrey;
+}
+
+.axis .baseline {
+  stroke: lightgrey;
+}
